@@ -86,13 +86,13 @@
 
 1. 工具包锁定（Toolkit lock-in）。各种工具包都有着其自己的 *main loops* 与事件处理框架。比如，在打算编写一个集成了套接字的 GUI 时，就很难使用上 `select` 函数。`select` 的使用，需要程序员编写自己的主循环，这就会与提供了预包装主循环的工具包发生冲突。
 
-> 解决方法：生成两个线程（Spawn two threads）。一个线程只用于 GUI 工具包。另一个线程则运行自己的定制主循环（your own personalized main loop）。两个线程之间通过相互发送消息，进行通信（比如，通过使用线程安全的FIFOs或队列，by using thread-safe FIFOs or queues）。
->
-> 关于线程与GUIs的注意点：重要的是要严格遵循某种消息传递模型：通常不能保有与GUIs函数进行通信的多个线程，因为这将导致X11库文件出现段错误; 因此只能有一个线程被赋予直接管理GUI的权力。所有其它线程可通过向该赋权线程发送消息的方式，间接地对GUI进行管理（strictly follow a message passing model. you generally CANNOT have multiple threads accessing GUI functions lest X11 libaries shall segfault; Thus, exactly one thread should be blessed to manage the GUI directly. All other threads can manage the GUI indirectly by sending messages to this one blessed thread）。我（作者）将在本文档解释如何完成这种做法。
+解决方法：生成两个线程（Spawn two threads）。一个线程只用于 GUI 工具包。另一个线程则运行自己的定制主循环（your own personalized main loop）。两个线程之间通过相互发送消息，进行通信（比如，通过使用线程安全的FIFOs或队列，by using thread-safe FIFOs or queues）。
+
+关于线程与GUIs的注意点：重要的是要严格遵循某种消息传递模型：通常不能保有与GUIs函数进行通信的多个线程，因为这将导致X11库文件出现段错误; 因此只能有一个线程被赋予直接管理GUI的权力。所有其它线程可通过向该赋权线程发送消息的方式，间接地对GUI进行管理（strictly follow a message passing model. you generally CANNOT have multiple threads accessing GUI functions lest X11 libaries shall segfault; Thus, exactly one thread should be blessed to manage the GUI directly. All other threads can manage the GUI indirectly by sending messages to this one blessed thread）。我（作者）将在本文档解释如何完成这种做法。
 
 2. 表达方面的问题（Expression）。我发现在各种工具包中都很难描述清楚一些想法，因为我发现很难对各种GUI工具包所采用的不同结构加以具象化和掌握（I found it hard to express ideas in toolkits because I found it hard to visualize and understand the structures which underlie GUI toolkits）。就算一些工具包已有集成了构建其GUIs的XML支持，但我（作者）仍然觉得需要很多额外的学习，同时缺少了HTML所能提供的灵活性。在采用并体会到HTML的方便一段时间后，我（作者）就开始思考：使用HTML来构建GUIs会怎样呢？
 
-> 解决办法：将某种web浏览器嵌入到GUI中。那么，就拥有了使用某种工具包来创建一些基本的GUI元素（如菜单与菜单项目）所带来的灵活性，又可以使用web浏览器来完成所有繁重事务（Thus, you have the felxibility of using a toolkit for creating a few basic things(such as menus and menu items), but you can use the web browser to do all the heavy lifting）。这种做法提出了一个额外的问题，将在本文档中进行讨论：怎样在web浏览器与定制的主循环之间进行消息的传输。HTML结构下的概念就是文档对象模型（Document Object Model, DOM），DOM有着一种一对一的回到HTML的映射关系。我（作者）认为这是一种易于掌握和操纵的模型，同时它也是强大的。
+解决办法：将某种web浏览器嵌入到GUI中。那么，就拥有了使用某种工具包来创建一些基本的GUI元素（如菜单与菜单项目）所带来的灵活性，又可以使用web浏览器来完成所有繁重事务（Thus, you have the felxibility of using a toolkit for creating a few basic things(such as menus and menu items), but you can use the web browser to do all the heavy lifting）。这种做法提出了一个额外的问题，将在本文档中进行讨论：怎样在web浏览器与定制的主循环之间进行消息的传输。HTML结构下的概念就是文档对象模型（Document Object Model, DOM），DOM有着一种一对一的回到HTML的映射关系。我（作者）认为这是一种易于掌握和操纵的模型，同时它也是强大的。
 
 我（作者）是在与各种涉及到套接字、串口、音频数据、MIDI数据及GUIs的事件处理循环打了交道后，最终得出这些结论的。我（作者）曾采用一些MVC（Model View Controller, 模式视图与控件）方法来完成GUI设计，并感受到这些方法带来的帮助，但仍然不能令到作者感到满意。最终在进行一些简单的基于web应用的开发时，才发现一些看起来管用的东西。基于web的应用有着十分严格的GUI（运行在远端）与代码（运行于服务器）的分离。因此主要代码自身无需受GUI工具包的限制。或者至少不会有这种感觉（Thus, your main code does not have to be locked into the GUI toolkit, per se. Or at least, it does not feel as such）。
 
