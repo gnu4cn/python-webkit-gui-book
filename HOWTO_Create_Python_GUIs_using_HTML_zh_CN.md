@@ -1028,6 +1028,7 @@ def my_quit_wrapper(fun):
         finally:
             kill_gtk_thread()
             Global.set_quit()
+
         return x
 
     return fun2   
