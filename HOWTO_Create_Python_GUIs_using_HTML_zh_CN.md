@@ -322,8 +322,8 @@ def synchronous_gtk_message(fun):
     #   - You probably shouldn't be using synchronous messages
     #     very often anyhow.  Async is cooler :-)
     #   - If this code is anything bad, it is probably that the
-    #     sleep() adds a bit of undesired latency before the result
-    #     can be returned.
+    #     sleep() adds a bit of undesired latency before the 
+    #     result can be returned.
     # If this still doesn't appeal to you, then keep reading
     # because I do this again with condition variables.
 
