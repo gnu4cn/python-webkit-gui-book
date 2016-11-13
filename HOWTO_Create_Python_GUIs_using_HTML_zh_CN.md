@@ -133,47 +133,47 @@ thread.start_new_thread(gtk.main, ())
 > 译者注：上面的代码，在virtualenv环境中运行，先会出现无法进行`pip install PyGtk`安装的错误，此时需要全局安装`sudo apt-get install python-gtk2.0`，然后修改`venv/bin/activate`脚本，在脚本后面加入下面这些行：
 
 ```bash
-VIRTUAL_ENV_DIST_PACKAGES=$VIRTUAL_ENV"/lib/python2.7/dist-packages"
+VENV_DIST_PACKAGES=$VIRTUAL_ENV"/lib/python2.7/dist-packages"
 
-if [ -d $VIRTUAL_ENV_DIST_PACKAGES ]; then
+if [ -d $VENV_DIST_PACKAGES ]; then
     :
 else
-    mkdir $VIRTUAL_ENV_DIST_PACKAGES
+    mkdir $VENV_DIST_PACKAGES
 fi;
 
-cd $VIRTUAL_ENV_DIST_PACKAGES
+cd $VENV_DIST_PACKAGES
 
-if [ -d $VIRTUAL_ENV_DIST_PACKAGES"/glib" ]; then
+if [ -d $VENV_DIST_PACKAGES"/glib" ]; then
     :
 else
     ln -s /usr/lib/python2.7/dist-packages/glib/
 fi;
 
-if [ -d $VIRTUAL_ENV_DIST_PACKAGES"/gobject" ]; then
+if [ -d $VENV_DIST_PACKAGES"/gobject" ]; then
     :
 else
     ln -s /usr/lib/python2.7/dist-packages/gobject/
 fi;
 
-if [ -d $VIRTUAL_ENV_DIST_PACKAGES"/gtk-2.0" ]; then
+if [ -d $VENV_DIST_PACKAGES"/gtk-2.0" ]; then
     :
 else
     ln -s /usr/lib/python2.7/dist-packages/gtk-2.0
 fi;
 
-if [ -e $VIRTUAL_ENV_DIST_PACKAGES"/pygtk.pth" ]; then
+if [ -e $VENV_DIST_PACKAGES"/pygtk.pth" ]; then
     :
 else
     ln -s /usr/lib/python2.7/dist-packages/pygtk.pth
 fi;
 
-if [ -e $VIRTUAL_ENV_DIST_PACKAGES"/pygtk.py" ]; then
+if [ -e $VENV_DIST_PACKAGES"/pygtk.py" ]; then
     :
 else
     ln -s /usr/lib/python2.7/dist-packages/pygtk.py
 fi;
 
-if [ -d $VIRTUAL_ENV_DIST_PACKAGES"/cairo" ]; then
+if [ -d $VENV_DIST_PACKAGES"/cairo" ]; then
     :
 else
     ln -s /usr/lib/python2.7/dist-packages/cairo
@@ -181,7 +181,7 @@ fi;
 
 cd $CURRENT_DIR
 
-export PYTHONPATH=$PYTHONPATH:$VIRTUAL_ENV/lib/python2.7/dist-packages
+export PYTHONPATH=$PYTHONATH$VENV_DIST_PACKAGES
 ```
 
 请继续阅读“消息传递（message passing）”部分，了解下一步要做的事情。
@@ -242,8 +242,8 @@ def asynchronous_gtk_message(fun):
     # This is a special type of function known as a "closure"
     # (although it is not quite as advanced as a closure in Lisp
     # or Ruby.  Challenge question: do you know why?).  In C++,
-    # a class-based functor which defines operator() (or Boost.Lambda)
-    # is the closest you can get to a closure:
+    # a class-based functor which defines `operator()` 
+    # (or `Boost.Lambda`) is the closest you can get to a closure:
 
     # 这是一种被称为“闭包”的特殊函数（尽管Python中的闭包与Lisp或Ruby中
     # 的比起来不那么高级。提个问题：你知道为什么这么说吗？）。在C++中，与
@@ -255,8 +255,8 @@ def asynchronous_gtk_message(fun):
         # above (with "def worker"):
         gobject.idle_add(worker, (fun, args, kwargs))
 
-    # Here, the closure is returned and must be called at some later
-    # point in the program:
+    # Here, the closure is returned and must be called at some 
+    # later point in the program:
 
     # 这里返回了该闭包，同时必定会在在程式后面的某个地方对其进行调用。
     return fun2
@@ -285,10 +285,12 @@ def asynchronous_gtk_message(fun):
 ``` python
 browser = ... # read about synchronous_gtk_message below to see what goes here
 ...
-asynchronous_gtk_message(browser.execute_script)('alert("oops")')
+asynchronous_gtk_message(browser.execute_script)(
+    'alert("oops")')
 
 # or, alternatively:
-async_execute_script = asynchronous_gtk_message(browser.execute_script)
+async_execute_script = asynchronous_gtk_message(
+    browser.execute_script)
 async_execute_script('alert("oops")')
 ```
 
@@ -309,9 +311,9 @@ def synchronous_gtk_message(fun):
     def worker((R, function, args, kwargs)):
         R.result = apply(function, args, kwargs)
 
-    # WARNING: I know the busy/sleep polling loop is going to offend
-    #   the sensibilities of some people.  I offer the following
-    #   justifications:
+    # WARNING: I know the busy/sleep polling loop is going to 
+    #   offend the sensibilities of some people.  I offer the 
+    #   following justifications:
     #   - Busy/sleep loops are a simple concept: easy to
     #     implement and they work in situations where you
     #     may not have condition variables (like checking your
@@ -342,7 +344,8 @@ def synchronous_gtk_message(fun):
     def fun2(*args, **kwargs):
         class R: pass
         R.result = NoResult
-        gobject.idle_add(callable=worker, user_data=(R, fun, args, kwargs))
+        gobject.idle_add(callable=worker, 
+                         user_data=(R, fun, args, kwargs))
         while R.result is NoResult:
             time.sleep(0.01)
         return R.result
@@ -366,7 +369,8 @@ def synchronous_gtk_message(fun):
 
     def fun2(*args, **kwargs):
         class R: result = NoResult
-        gobject.idle_add(callable=worker, user_data=(R, fun, args, kwargs))
+        gobject.idle_add(callable=worker, 
+                         user_data=(R, fun, args, kwargs))
         while R.result is NoResult: time.sleep(0.01)
         return R.result
 
@@ -390,7 +394,8 @@ def synchronous_gtk_message2(fun):
         condition = threading.Condition()
         condition.acquire()
         class R: pass
-        gobject.idle_add(worker, (R, condition, fun, args, kwargs))
+        gobject.idle_add(worker, 
+                         (R, condition, fun, args, kwargs))
         condition.wait()
         condition.release()
         return R.result
@@ -404,19 +409,23 @@ def synchronous_gtk_message2(fun):
 # non-working/broken version of the above code :-P
 def synchronous_gtk_message3(fun):
 
-    # This doesn't work for me.  Can anyone shed some light on this?
+    # This doesn't work for me.  Can anyone shed some light on 
+    # this?
     #
-    # Besides, http://library.gnome.org/devel/gdk/unstable/gdk-Threads.html
-    # gives a warning that this may only work for X11 but not Win32:
+    # Besides, 
+    # http://library.gnome.org/devel/gdk/unstable/gdk-Threads.html
+    # gives a warning that this may only work for X11 but not 
+    # Win32:
     #
-    #     GTK+ is "thread aware" but not thread safe - it provides a global
-    #     lock controlled by gdk_threads_enter()/gdk_threads_leave() which
-    #     protects all use of GTK+. That is, only one thread can use GTK+
-    #     at any given time.
+    #     GTK+ is "thread aware" but not thread safe - it 
+    #     provides a global lock controlled by 
+    #     gdk_threads_enter()/gdk_threads_leave() which
+    #     protects all use of GTK+. That is, only one 
+    #     thread can use GTK+ at any given time.
     #
-    #     Unfortunately the above holds with the X11 backend only. With the
-    #     Win32 backend, GDK calls should not be attempted from multiple
-    #     threads at all.
+    #     Unfortunately the above holds with the X11 backend 
+    #     only. With the Win32 backend, GDK calls should 
+    #     not be attempted from multiple threads at all.
     def fun2(*args, **kwargs):
         gtk.gdk.threads_enter()
         try:     x = apply(fun, args, kwargs)
@@ -461,8 +470,8 @@ def launch_browser(uri, echo=True):
     # WARNING: You should call this function ONLY inside of GTK
     #          (i.e. use synchronous_gtk_message)
 
-    # 警告：次函数只应在GTK内部进行调用（比如，使用`synchronous_gtk_message`
-    # 对其进行调用）。
+    # 警告：次函数只应在GTK内部进行调用（比如，使用
+   # `synchronous_gtk_message`对其进行调用）。
 
     window = gtk.Window()
     window.set_default_size(800, 600)
@@ -480,7 +489,8 @@ def launch_browser(uri, echo=True):
     window.add(box)
     window.show_all()
 
-    # Note: All message passing stuff appears between these curly braces:
+    # Note: All message passing stuff appears between these 
+    # curly braces:
 
     # 注意：所有消息传递事务，都在这个花括号内：
     # {
@@ -543,7 +553,8 @@ def launch_browser(uri, echo=True):
     #browser = webkit.WebView() # <- webkit (obviously)
     browser = gtkmozembed.MozEmbed() # <- gtkmozembed
 
-    # gtkmozembed only (for webkit, we use its .execute_script()):
+    # gtkmozembed only (for webkit, we use its 
+    # .execute_script()):
     def inject_javascript(script):
         uri = 'javascript:%s' % urllib.quote(script + '\n;void(0);')
         browser.load_url(uri)
@@ -557,7 +568,8 @@ def launch_browser(uri, echo=True):
 
     window.show_all()
 
-    # Note: All message passing stuff appears between these curly braces:
+    # Note: All message passing stuff appears between these 
+    # curly braces:
     # {
     message_queue = Queue.Queue()
 
@@ -582,8 +594,10 @@ def launch_browser(uri, echo=True):
 
     def web_send(msg):
         if echo: print '<<<', msg
-        #asynchronous_gtk_message(browser.execute_script)(msg) # <- webkit
-        asynchronous_gtk_message(inject_javascript)(msg) # <- gtkmozembed
+        # asynchronous_gtk_message(browser.execute_script)(msg) 
+        # # <- webkit
+        asynchronous_gtk_message(inject_javascript)(msg) 
+        # <- gtkmozembed
     # }
 
     #browser.open(uri) # <- webkit
@@ -830,7 +844,10 @@ class WebKitMethods(object):
 
     @staticmethod
     def connect_title_changed(browser, callback):
-        def callback_wrapper(widget, frame, title): callback(title)
+
+        def callback_wrapper(widget, frame, title):
+            callback(title)
+
         browser.connect('title-changed', callback_wrapper)
 
     @staticmethod
@@ -894,7 +911,8 @@ def launch_browser(uri, quit_function=None, echo=True):
         menu_bar.append(file_item)
         menu_bar.show()
 
-        box.pack_start(menu_bar, expand=False, fill=True, padding=0)
+        box.pack_start(menu_bar, expand=False, fill=True, 
+                       padding=0)
 
         accel_group = gtk.AccelGroup()
         quit_item.add_accelerator('activate',
@@ -1000,15 +1018,13 @@ def main():
 
         if msg == "got-a-click":
             clicks += 1
-            web_send('document.getElementById("messages").innerHTML = %s' %
-                     to_json('%d clicks so far' % clicks))
+            web_send('document.getElementById("messages").innerHTML = %s' % to_json('%d clicks so far' % clicks))
             # If you are using jQuery, you can do this instead:
             # web_send('$("#messages").text(%s)' %
             #          to_json('%d clicks so far' % clicks))
 
         if current_time - last_second >= 1.0:
-            web_send('document.getElementById("uptime-value").innerHTML = %s' %
-                     to_json('%d' % uptime_seconds))
+            web_send('document.getElementById("uptime-value").innerHTML = %s to_json('%d' % uptime_seconds))
             # If you are using jQuery, you can do this instead:
             # web_send('$("#uptime-value").text(%s)'
             #        % to_json('%d' % uptime_seconds))
