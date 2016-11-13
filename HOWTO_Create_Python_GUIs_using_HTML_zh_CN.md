@@ -310,35 +310,35 @@ def synchronous_gtk_message(fun):
         R.result = apply(function, args, kwargs)
 
     # WARNING: I know the busy/sleep polling loop is going to offend
-    #          the sensibilities of some people.  I offer the following
-    #          justifications:
-    #          - Busy/sleep loops are a simple concept: easy to
-    #            implement and they work in situations where you
-    #            may not have condition variables (like checking your
-    #            email with fetchmail).
-    #          - If you do use a synchronous message, it will probably
-    #            complete very rapidly, thus very few CPU cycles will
-    #            by wasted by this busy loop (thanks to the sleep).
-    #          - You probably shouldn't be using synchronous messages
-    #            very often anyhow.  Async is cooler :-)
-    #          - If this code is anything bad, it is probably that the
-    #            sleep() adds a bit of undesired latency before the result
-    #            can be returned.
-    #          If this still doesn't appeal to you, then keep reading
-    #          because I do this again with condition variables.
+    #   the sensibilities of some people.  I offer the following
+    #   justifications:
+    #   - Busy/sleep loops are a simple concept: easy to
+    #     implement and they work in situations where you
+    #     may not have condition variables (like checking your
+    #     email with fetchmail).
+    #   - If you do use a synchronous message, it will probably
+    #     complete very rapidly, thus very few CPU cycles will
+    #     by wasted by this busy loop (thanks to the sleep).
+    #   - You probably shouldn't be using synchronous messages
+    #     very often anyhow.  Async is cooler :-)
+    #   - If this code is anything bad, it is probably that the
+    #     sleep() adds a bit of undesired latency before the result
+    #     can be returned.
+    # If this still doesn't appeal to you, then keep reading
+    # because I do this again with condition variables.
 
     # 警告：我明白这里的繁忙/睡眠轮询循环会冒犯到某些人的敏感神经。但我这
     #       么做的理由有下面这些：
-    #       - 繁忙/睡眠循环是一个简单的概念：它们易于部署，同时在某些不具备
-    #         条件变量的地方（比如使用`fetchmail`来坚持邮件时），繁忙/睡眠
-    #         循环仍然能较好工作。
-    #       - 如你确实使用的是同步消息，那么消息传递将很快完成，因此该繁忙
-    #         循环只将浪费极少的CPU资源（归功于睡眠的采用）。
-    #       - 总之，你不应过份频繁地使用同步消息。异步总是比较好的选择：-）
-    #       - 如果说这里的代码有什么问题，那就是这里的`sleep()`带入了一点点
-    #         于结果返回之前不想要的延迟了。
-    #       如这样还不能令你满意，那么请继续阅读，后面我还用条件变量，再次
-    #       对此进行了实现。
+    #   - 繁忙/睡眠循环是一个简单的概念：它们易于部署，同时在某些不具备
+    #     条件变量的地方（比如使用`fetchmail`来坚持邮件时），繁忙/睡眠
+    #     循环仍然能较好工作。
+    #   - 如你确实使用的是同步消息，那么消息传递将很快完成，因此该繁忙
+    #     循环只将浪费极少的CPU资源（归功于睡眠的采用）。
+    #   - 总之，你不应过份频繁地使用同步消息。异步总是比较好的选择：-）
+    #   - 如果说这里的代码有什么问题，那就是这里的`sleep()`带入了一点点
+    #     于结果返回之前不想要的延迟了。
+    # 如这样还不能令你满意，那么请继续阅读，后面我还用条件变量，再次
+    # 对此进行了实现。
     def fun2(*args, **kwargs):
         class R: pass
         R.result = NoResult
