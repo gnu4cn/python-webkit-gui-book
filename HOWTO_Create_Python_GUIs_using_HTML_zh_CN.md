@@ -493,6 +493,12 @@ def launch_browser(uri, echo=True):
     box = gtk.VBox(homogeneous=False, spacing=0)
     browser = webkit.WebView()
 
+    # 这里要对一个webkit的设置进行设定，为载入本地文件, 以便后面
+    # 能够载入本地的JavaScript、CSS框架
+
+    settings = browser.get_settings()
+    settings.set_property('enable-file-access-from-file-uris', 1)
+
     box.pack_start(browser, expand=True, fill=True, padding=0)
 
     window.add(box)
@@ -845,7 +851,11 @@ class WebKitMethods(object):
 
     @staticmethod
     def create_browser():
-        return webkit.WebView()
+        # 这里要做处理（译者添加的部分）
+        view = webkit.WebView()
+        settings = view.get_settings()
+        settings.set_property('enable-file-access-from-file-uris', 1)
+        return view
 
     @staticmethod
     def inject_javascript(browser, script):
