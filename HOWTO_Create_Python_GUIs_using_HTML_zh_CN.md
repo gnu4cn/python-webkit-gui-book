@@ -133,6 +133,7 @@ thread.start_new_thread(gtk.main, ())
 > 译者注：上面的代码，在virtualenv环境中运行，先会出现无法进行`pip install PyGtk`安装的错误，此时需要全局安装`sudo apt-get install python-gtk2.0`，然后修改`venv/bin/activate`脚本，在脚本后面加入下面这些行：
 
 ```bash
+
 VENV_DIST_PACKAGES=$VIRTUAL_ENV"/lib/python2.7/dist-packages"
 
 if [ -d $VENV_DIST_PACKAGES ]; then
@@ -141,7 +142,15 @@ else
     mkdir $VENV_DIST_PACKAGES
 fi;
 
+CURRENT_DIR=`echo $PWD`
+
 cd $VENV_DIST_PACKAGES
+
+if [ -d $VENV_DIST_PACKAGES"/webkit" ]; then
+    :
+else
+    ln -s /usr/lib/python2.7/dist-packages/webkit/
+fi;
 
 if [ -d $VENV_DIST_PACKAGES"/glib" ]; then
     :
