@@ -7,4 +7,4 @@
 
 ## 预备知识
 
-阅读本书，你需要对Python、AngularJS有扎实掌握，需要了解Python-GTK、python-WebKitGTK有一定了解。
+阅读本书，你需要对Python（网上有大量资料）、AngularJS（[本书作者的AngularJS教程](https://github.com/gnu4cn/angularJS)）有扎实掌握，需要了解Python-GTK、python-WebKitGTK有一定了解。
