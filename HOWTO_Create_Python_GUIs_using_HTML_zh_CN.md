@@ -162,7 +162,7 @@ MODULES_NEEDED="pygtk.pth pygtk.py"
 
 for module in $MODULES_NEEDED
 do
-    if [ -e $VENV_SITE_PKGS"pygtk.pth" ]; then
+    if [ -e $VENV_SITE_PKGS$module ]; then
         :
     else
         ln -s $GLOBAL_DIST_DIR$module
