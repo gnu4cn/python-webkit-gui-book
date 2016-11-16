@@ -242,7 +242,7 @@ if __name__ == '__main__': # <-- this line is optional
     my_quit_wrapper(main)()
 ```
 
-### AngularJS中对`web_recv`及`web_send`的适配
+## AngularJS中对`web_recv`及`web_send`的适配
 
 这里将第一篇文章中的`ipc.js`，封装成了业务逻辑服务`sendMsg`，于是可方便的在应用的多出加以注入与调用。
 
@@ -277,23 +277,39 @@ Controllers.controller('MainCtrl', ['$scope', 'sendMsg',
         $scope.card_head = "测试图片";
         $scope.image_desc = "这是一张测试图片";
         var flag = 0;
-
         $scope.btnClicked = function () {
             sendMsg('"button-clicked"');
         };
-        
-        $scope.update_desc = function (){
-            if ( flag === 0 ) {
-                $scope.image_desc = "This is a test pic.";
-                flag = 1;
-            }
-            else {
-                $scope.image_desc = "这是一张测试图片";
-                flag = 0;
-            }
+        $scope.btnHeadClicked = function () {
+            sendMsg('"button-head-clicked"');
         };
+        $scope.update_desc = function () {
+            // 这里使用 $scope.$apply, 为的是令到web_send过来的消息立即得到处理，避免延迟。
+            $scope.$apply(
+                    function () {
+                        if (flag === 0) {
+                            $scope.image_desc = "This is a test pic." + " " + flag.toString();
+                            flag = 1;
+                        } else {
+                            $scope.image_desc = "这是一张测试图片" + " " + flag.toString();
+                            flag = 0;
+                        }
+                    });
+        };
+        $scope.update_head = function () {
+            $scope.$apply(
+                    function () {
+                        if (flag === 0) {
+                            $scope.card_head = "TEST PIC" + " " + flag.toString();
+                            flag = 1;
+                        } else {
+                            $scope.card_head = "测试图片" + " " + flag.toString();
+                            flag = 0;
+                        }
+                    });
+        }
     }]);
 ```
 
 ## 问题
-测试发现，`web_recv`与`web_send`存在一个滞后现象，稍后查找原因。
+暂无问题。
