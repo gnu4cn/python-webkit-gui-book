@@ -244,7 +244,7 @@ if __name__ == '__main__': # <-- this line is optional
 
 ## AngularJS中对`web_recv`及`web_send`的适配
 
-这里将第一篇文章中的`ipc.js`，封装成了业务逻辑服务`sendMsg`，于是可方便的在应用的多出加以注入与调用。
+这里将第一篇文章中的`ipc.js`，封装成了业务逻辑服务`sendMsg`，于是可方便的在应用的多处加以注入与调用。
 
 `bservices.js`:
 
@@ -284,7 +284,7 @@ Controllers.controller('MainCtrl', ['$scope', 'sendMsg',
             sendMsg('"button-head-clicked"');
         };
         $scope.update_desc = function () {
-            // 这里使用 $scope.$apply, 为的是令到web_send过来的消息立即得到处理，避免延迟。
+            // 这里使用 $scope.$apply, 为的是令到web_send过来的消息立即得到处理，避免延迟。至于为什么要这样做，请自行google 'angularjs scope apply'
             $scope.$apply(
                     function () {
                         if (flag === 0) {
