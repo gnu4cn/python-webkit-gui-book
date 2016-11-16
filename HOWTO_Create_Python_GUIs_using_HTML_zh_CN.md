@@ -41,27 +41,27 @@
 
 ## 本文档的历史
 
-2013-03-21 21:02:33 UTC David Baird <[dhbaird@gmail.com](mailto:dhbaird@gmail.com)>
+2013-03-21 21:02:33 UTC David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 来自 [http://webhostinggeeks.com/](http://webhostinggeeks.com/) 的 Anja Skrba 已将本文翻译为 [塞尔维亚-克罗地亚语](http://science.webhostinggeeks.com/python-gui)。
 
-2009-10-25 22:29:24 UTC David Baird <[dhbaird@gmail.com](mailto:dhbaird@gmail.com)>
+2009-10-25 22:29:24 UTC David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 对代码进行了重构，实现对 Webkit 或 GtkMozEmbed 的自动侦测，并利用所发现的引擎。现在还使用了标准库函数 `os.paht.abspath` 及 `urllib.pathname2url`，取代手工尝试生成正确的路径与URLs的方式。
 
-2009-06-21 13:30:57 UTC David Baird <[dhbaird@gmail.com](mailto:dhbaird@gmail.com)>
+2009-06-21 13:30:57 UTC David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 通过使用 `asynchronous_gtk_message`, 而不再使用 `synchronous_gtk_message`，修正了 `kill_gtk_thread()` 与 `my_quit_wrapper()`。（感谢 Tim Kersten 指出这一点）。
 
-2009-05-16 07:36:37 UTC David Baird <[dhbaird@gmail.com](mailto:dhbaird@gmail.com)>
+2009-05-16 07:36:37 UTC David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 我（作者）更新了此文档，加入了对 GtkMozEmbed 的说明。作者重写了示例代码，同时提供了对 GtkMozEmbed 与 PyWebKitGtk 的支持。
 
-2009-05-16 06:27:53 UTC David Baird <[dhbaird@gmail.com](mailto:dhbaird@gmail.com)>
+2009-05-16 06:27:53 UTC David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 修正了一些拼写错误（感谢 [Emend](http://emend.appspot.com/sites/www.aclevername.com)  -- 一个非常棒的语法问题工具，的 [John Tantalo](http://www.johntantalo.com/) ([Twitter](http://twitter.com/emendapp) 的指正）。我还采纳了一项使用条件变量（to use condition varibles）的建议（来自 [Y Combinator News](http://news.ycombinator.com/item?id=587180)）。还将`execute`函数，重命名作更为恰当的的`worker`了。
 
-2009-05-16 02:22:09 UTC David Baird <[dhbaird@gmail.com](mailto:dhbaird@gmail.com)>
+2009-05-16 02:22:09 UTC David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 对文档进行了更新，将 JavaScript 的 `send()` 函数，移入到一个名为 `ipc.js` 的单独文件中; 先前的 `send()` 是通过使用 WebKit 的 `.execute_script()` 方法，加以注入的。通过对 `send()` 的此种重构，就可以更容易的使用 gtkmozembed(Mozilla) 引擎了，该引擎的 JavaScript 注入方式有些许的差异，该引擎是 WebKit 的一种替代。
 
