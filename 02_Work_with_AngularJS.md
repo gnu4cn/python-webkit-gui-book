@@ -45,10 +45,10 @@ class WebKitMethods(object):
         return view
 
     @staticmethod
-    def inject_javascript(browser, script):
-        # 这里对原程式进行了Hack, 简化demo.py中`web_send`的操作
-        instruction = "angular.element(document.querySelector('[ng-app=webkit_gui_demo]')).scope().%s"
-        browser.execute_script(instruction % script)
+    def inject_javascript(browser, app, script):
+        # 这里对原程式进行了Hack, 简化AngularJS中execute_script的操作
+        instruction = "angular.element(document.querySelector('[ng-app=%s]')).scope().%s()"
+        browser.execute_script(instruction % (app, script))
 
     @staticmethod
     def connect_title_changed(browser, callback):
@@ -150,9 +150,9 @@ def launch_browser(uri, quit_function=None, echo=True):
             if echo: print '>>>', msg
             return msg
 
-    def web_send(msg):
+    def web_send(app, msg):
         if echo: print '<<<', msg
-        asynchronous_gtk_message(implementation.inject_javascript)(browser, msg)
+        asynchronous_gtk_message(implementation.inject_javascript)(browser, app, msg)
 
     return browser, web_recv, web_send
 
@@ -191,6 +191,8 @@ class Global(object):
         cls.quit = True
 
 def main():
+    APP = "webkit_gui_demo"
+
     start_gtk_thread()
 
     # Create a proper file:// URL pointing to demo.xhtml:
@@ -214,9 +216,9 @@ def main():
             again = True
 
         if msg == "button-clicked":
-            # 这里只需传入AngularJS控件中定义的JavaScript函数即可
-            # 这种改动大大简化并增强了python对前端页面的控制
-            web_send("update_desc()")
+            # 这里第一个参数是AngularJS的`ng-app`属性值，第二个是定义在控件中的
+            # 函数。
+            web_send(APP, "update_desc")
 
         if again: pass
         else:     time.sleep(0.1)
