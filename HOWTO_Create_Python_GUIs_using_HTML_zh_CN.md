@@ -133,64 +133,45 @@ thread.start_new_thread(gtk.main, ())
 > 译者注：上面的代码，在virtualenv环境中运行，先会出现无法进行`pip install PyGtk`安装的错误，此时需要全局安装`sudo apt-get install python-gtk2.0`，然后修改`venv/bin/activate`脚本，在脚本后面加入下面这些行：
 
 ```bash
+VENV_SITE_PKGS=$VIRTUAL_ENV"/lib/python2.7/site-packages/"
 
-VENV_DIST_PACKAGES=$VIRTUAL_ENV"/lib/python2.7/dist-packages"
-
-if [ -d $VENV_DIST_PACKAGES ]; then
+if [ -d $VENV_SITE_PKGS ]; then
     :
 else
-    mkdir $VENV_DIST_PACKAGES
+    mkdir $VENV_SITE_PKGS
 fi;
 
 CURRENT_DIR=`echo $PWD`
 
-cd $VENV_DIST_PACKAGES
+cd $VENV_SITE_PKGS
 
-if [ -d $VENV_DIST_PACKAGES"/webkit" ]; then
-    :
-else
-    ln -s /usr/lib/python2.7/dist-packages/webkit/
-fi;
+GLOBAL_DIST_DIR="/usr/lib/python2.7/dist-packages/"
 
-if [ -d $VENV_DIST_PACKAGES"/glib" ]; then
-    :
-else
-    ln -s /usr/lib/python2.7/dist-packages/glib/
-fi;
+PKGS_NEEDED="webkit glib gobject gtk-2.0 cairo"
 
-if [ -d $VENV_DIST_PACKAGES"/gobject" ]; then
-    :
-else
-    ln -s /usr/lib/python2.7/dist-packages/gobject/
-fi;
+for pkg in $PKGS_NEEDED
+do
+    if [ -d $VENV_SITE_PKGS$pkg ]; then
+        :
+    else
+        ln -s $GLOBAL_DIST_DIR$pkg
+    fi;
+done;
 
-if [ -d $VENV_DIST_PACKAGES"/gtk-2.0" ]; then
-    :
-else
-    ln -s /usr/lib/python2.7/dist-packages/gtk-2.0
-fi;
+MODULES_NEEDED="pygtk.pth pygtk.py"
 
-if [ -e $VENV_DIST_PACKAGES"/pygtk.pth" ]; then
-    :
-else
-    ln -s /usr/lib/python2.7/dist-packages/pygtk.pth
-fi;
-
-if [ -e $VENV_DIST_PACKAGES"/pygtk.py" ]; then
-    :
-else
-    ln -s /usr/lib/python2.7/dist-packages/pygtk.py
-fi;
-
-if [ -d $VENV_DIST_PACKAGES"/cairo" ]; then
-    :
-else
-    ln -s /usr/lib/python2.7/dist-packages/cairo
-fi;
+for module in $MODULES_NEEDED
+do
+    if [ -e $VENV_SITE_PKGS"pygtk.pth" ]; then
+        :
+    else
+        ln -s $GLOBAL_DIST_DIR$module
+    fi;
+done
 
 cd $CURRENT_DIR
 
-export PYTHONPATH=$PYTHONATH$VENV_DIST_PACKAGES
+export PYTHONPATH=$PYTHONATH$VENV_SITE_PKGS
 ```
 
 请继续阅读“消息传递（message passing）”部分，了解下一步要做的事情。
