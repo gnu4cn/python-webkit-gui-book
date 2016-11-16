@@ -296,5 +296,4 @@ Controllers.controller('MainCtrl', ['$scope', 'sendMsg',
 ```
 
 ## 问题
-
-测试发现，在调用`web_send`向WebKit发送消息时，第一次不会成功，尔后再无问题，目前不知何故。
+暂无问题。
