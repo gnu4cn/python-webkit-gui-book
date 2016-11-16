@@ -217,7 +217,7 @@ def main():
 
         if msg == "button-clicked":
             # 这里第一个参数是AngularJS的`ng-app`属性值，第二个是定义在AngularJS控件中的
-            # 函数。
+            # 函数名称。
             web_send(APP, "update_desc")
 
         if again: pass
