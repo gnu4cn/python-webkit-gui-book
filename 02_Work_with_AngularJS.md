@@ -283,7 +283,9 @@ Controllers.controller('MainCtrl', ['$scope', 'sendMsg',
             sendMsg('"button-head-clicked"');
         };
         $scope.update_desc = function () {
-            // 这里使用 $scope.$apply, 为的是令到web_send过来的消息立即得到处理，避免延迟。至于为什么要这样做，请自行google 'angularjs scope apply'
+            // 这里使用 $scope.$apply, 为的是令到web_send过来的消息立即
+            // 得到处理，避免延迟。至于为什么要这样做，请自行google 
+            // 'angularjs scope apply'
             $scope.$apply(
                     function () {
                         if (flag === 0) {
