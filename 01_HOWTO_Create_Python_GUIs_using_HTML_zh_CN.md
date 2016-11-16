@@ -41,6 +41,10 @@
 
 ## 本文档的历史
 
+2016-11-16 17:14:00 CST Peng Hailin [unisko@gmail.com](mailto:unisko@gmail.com)
+
+> 来自 [https://xfoss.com/](https://xfoss.com/)的 Peng Hailin 已将本文档翻译为简体中文版，并因应AngularJS的加入，而对`webgui.py`进行了改进。加入如何在AngularJS中进行消息传递接收的文档。
+
 2013-03-21 21:02:33 UTC David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 来自 [http://webhostinggeeks.com/](http://webhostinggeeks.com/) 的 Anja Skrba 已将本文翻译为 [塞尔维亚-克罗地亚语](http://science.webhostinggeeks.com/python-gui)。
@@ -65,7 +69,7 @@
 
 > 对文档进行了更新，将 JavaScript 的 `send()` 函数，移入到一个名为 `ipc.js` 的单独文件中; 先前的 `send()` 是通过使用 WebKit 的 `.execute_script()` 方法，加以注入的。通过对 `send()` 的此种重构，就可以更容易的使用 gtkmozembed(Mozilla) 引擎了，该引擎的 JavaScript 注入方式有些许的差异，该引擎是 WebKit 的一种替代。
 
-2009-04-22 David Baird <[dhbaird@gmail.com](mailto:dhbaird@gmail.com)>
+2009-04-22 David Baird [dhbaird@gmail.com](mailto:dhbaird@gmail.com)
 
 > 第一版，对如何嵌入 WebKit 及 Python 下的消息交换进行了解释。
 
