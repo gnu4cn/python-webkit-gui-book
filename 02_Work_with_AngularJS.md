@@ -296,4 +296,4 @@ Controllers.controller('MainCtrl', ['$scope', 'sendMsg',
 ```
 
 ## 问题
-暂无问题。
+测试发现，`web_recv`与`web_send`存在一个滞后现象，稍后查找原因。
