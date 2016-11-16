@@ -86,7 +86,7 @@ def synchronous_gtk_message(fun):
 
     return fun2
 
-def launch_browser(uri, quit_function=None, echo=True):
+def launch_browser(uri, quit_function=None, echo=False):
 
     window = gtk.Window()
     window.set_default_size(800, 600)
@@ -200,8 +200,7 @@ def main():
     uri = 'file://' + urllib.pathname2url(file)
     browser, web_recv, web_send = \
         synchronous_gtk_message(launch_browser)(uri,
-                                                quit_function=Global.set_quit,
-                                                echo=False)
+                                                quit_function=Global.set_quit)
 
     # Finally, here is our personalized main loop, 100% friendly
     # with "select" (although I am not using select here)!:
