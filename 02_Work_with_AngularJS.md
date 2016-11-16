@@ -47,8 +47,8 @@ class WebKitMethods(object):
     @staticmethod
     def inject_javascript(browser, app, script):
         # 这里对原程式进行了Hack, 简化AngularJS中execute_script的操作
-        instruction = "angular.element(document.querySelector('[ng-app=%s]')).scope().%s()"
-        browser.execute_script(instruction % (app, script))
+        cmd = "angular.element(document.querySelector('[ng-app=%s]')).scope().%s()"
+        browser.execute_script(cmd % (app, script))
 
     @staticmethod
     def connect_title_changed(browser, callback):
