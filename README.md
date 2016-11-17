@@ -8,3 +8,7 @@
 ## 预备知识
 
 阅读本书，你需要对Python（网上有大量资料）、AngularJS（[AngularJS教程](https://github.com/gnu4cn/angularJS)）有扎实掌握，需要了解Python-GTK、python-WebKitGTK有一定了解。
+
+## 用途
+
+用途十分广泛，既可建立基于HTML的本地应用程序，同时因为Python强大、数量极为丰富的模块支持，而应用于物联网、机器识别等新型应用的开发。
