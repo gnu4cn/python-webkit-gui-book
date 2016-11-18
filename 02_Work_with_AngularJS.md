@@ -39,6 +39,9 @@ class WebKitMethods(object):
 
     @staticmethod
     def create_browser():
+        # 这里需要开启`enable-file-access-from-file-uris`这一`WebView()`属性
+        # 后期直接从网络加载AngularJS的模板、CSS文件时，可能无需开启此特性。
+        # 此方面涉及跨域资源共享（Cross-origin resourse sharing, CORS）方面的知识。
         view = webkit.WebView()
         settings = view.get_settings()
         settings.set_property('enable-file-access-from-file-uris', 1)
