@@ -178,7 +178,10 @@ import os
 import time
 import urllib
 
-from simplejson import dumps as to_json
+# 引入了AngularJS后，已无需使用`to_json`方法了，从这一点上说，比起第一篇
+# 文章，确有简化。
+
+# from simplejson import dumps as to_json
 from simplejson import loads as from_json
 
 from webgui import start_gtk_thread
